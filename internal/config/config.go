@@ -42,7 +42,7 @@ func write(cfg Config) error {
   return nil
 }
 
-func Read() Config {
+func Read() (Config, error) {
   var config Config
 
   filePath, err := getConfigFilePath()
@@ -62,7 +62,7 @@ func Read() Config {
     log.Fatal(err)
   }
 
-  return config
+  return config, nil
 }
 
 type Config struct {
@@ -70,7 +70,7 @@ type Config struct {
   CurrentUserName string `json:"current_user_name"`
 }
 
-func (c Config) SetUser(user string) {
-  c.CurrentUserName = user
-  write(c)
+func (c *Config) SetUser(userName string) error {
+  c.CurrentUserName = userName
+  return write(*c)
 }
