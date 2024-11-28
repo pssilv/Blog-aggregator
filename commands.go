@@ -4,16 +4,18 @@ import (
 	"log"
 
 	"github.com/pssilv/Blog-aggregator/internal/config"
+	"github.com/pssilv/Blog-aggregator/internal/database"
 )
 
-
 type State struct {
-  Cfg *config.Config
+  cfg *config.Config
+  db *database.Queries
+  connection string
 }
 
 type Command struct {
-  Name string
-  Args []string
+  name string
+  args []string
 }
 
 type Commands struct {
@@ -29,7 +31,7 @@ func (c *Commands) Run(s *State, cmd Command) error {
     log.Fatal("commandsName is  nil!")
   }
 
-  handler, exists := c.CommandsName[cmd.Name]
+  handler, exists := c.CommandsName[cmd.name]
   if !exists {
     log.Fatal("Command name doesn't exist")
   }
