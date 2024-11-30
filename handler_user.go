@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,11 +19,11 @@ func HandlerLogin(s *State, cmd Command) error {
 
   userExists, _ := s.db.GetUser(context.Background(), name)
   if userExists == (database.User{}) {
-    log.Fatal("User doesn't exist")
+    return fmt.Errorf("User doesn't exist")
   }
 
   if err := s.cfg.SetUser(name); err != nil {
-    log.Fatal(err)
+    return fmt.Errorf("Error: %w", err)
   }
 
   fmt.Printf("User: %v has been set\n", name)
@@ -40,7 +39,7 @@ func HandlerRegister(s *State, cmd Command) error {
 
   userExists, _ := s.db.GetUser(context.Background(), name)
   if userExists.Name != "" {
-    log.Fatalf("User: %s already exist", userExists.Name)
+    return fmt.Errorf("User: %s already exist", userExists.Name)
   }
 
   userParams := database.CreateUserParams {
@@ -53,11 +52,11 @@ func HandlerRegister(s *State, cmd Command) error {
   user, err := s.db.CreateUser(context.Background(), userParams)
   if err != nil {
     fmt.Println("UUID:", userParams.ID)
-    log.Fatal(err)
+    return fmt.Errorf("Error: %w", err)
   }
 
   if err := s.cfg.SetUser(user.Name); err != nil {
-    log.Fatal(err)
+    return fmt.Errorf("Error: %w", err)
   }
 
   fmt.Printf("User: %v has been created\n", user.Name)
@@ -68,7 +67,7 @@ func HandlerRegister(s *State, cmd Command) error {
 
 func handlerReset(s *State, cmd Command) error {
   if err := s.db.ResetUsers(context.Background()); err != nil {
-    log.Fatal(err)
+    return fmt.Errorf("Error: %w", err)
   }
 
   fmt.Printf("Table: Users have been reset\n")
@@ -80,7 +79,7 @@ func handlerReset(s *State, cmd Command) error {
 func handlerList(s * State, cmd Command) error {
   users, err := s.db.ListUsers(context.Background())
   if err != nil {
-    log.Fatal(err)
+    return fmt.Errorf("Error: %w", err)
   }
 
   for _, user := range users {

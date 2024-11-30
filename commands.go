@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/pssilv/Blog-aggregator/internal/config"
 	"github.com/pssilv/Blog-aggregator/internal/database"
@@ -28,16 +28,16 @@ func (c *Commands) Register(name string, f func(*State, Command) error) {
 
 func (c *Commands) Run(s *State, cmd Command) error {
   if c.CommandsName == nil {
-    log.Fatal("commandsName is  nil!")
+    return fmt.Errorf("commandsName is  nil!")
   }
 
   handler, exists := c.CommandsName[cmd.name]
   if !exists {
-    log.Fatal("Command name doesn't exist")
+    return fmt.Errorf("Command name doesn't exist")
   }
 
   if err := handler(s, cmd); err != nil {
-    log.Fatal(err)
+    return fmt.Errorf("Error %w", err)
   }
 
   return nil
