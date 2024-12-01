@@ -11,8 +11,8 @@ import (
 )
 
 func HandlerLogin(s *State, cmd Command) error {
-  if len(cmd.args) == 0 {
-    return errors.New("Missing user")
+  if len(cmd.args) != 1 {
+    return errors.New("Invalid number of arguments, expected: user")
   }
 
   name := cmd.args[0]
@@ -23,7 +23,7 @@ func HandlerLogin(s *State, cmd Command) error {
   }
 
   if err := s.cfg.SetUser(name); err != nil {
-    return fmt.Errorf("Error: %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   fmt.Printf("User: %v has been set\n", name)
@@ -52,11 +52,11 @@ func HandlerRegister(s *State, cmd Command) error {
   user, err := s.db.CreateUser(context.Background(), userParams)
   if err != nil {
     fmt.Println("UUID:", userParams.ID)
-    return fmt.Errorf("Error: %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   if err := s.cfg.SetUser(user.Name); err != nil {
-    return fmt.Errorf("Error: %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   fmt.Printf("User: %v has been created\n", user.Name)
@@ -67,7 +67,7 @@ func HandlerRegister(s *State, cmd Command) error {
 
 func handlerReset(s *State, cmd Command) error {
   if err := s.db.ResetUsers(context.Background()); err != nil {
-    return fmt.Errorf("Error: %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   fmt.Printf("Table: Users have been reset\n")
@@ -79,7 +79,7 @@ func handlerReset(s *State, cmd Command) error {
 func handlerList(s * State, cmd Command) error {
   users, err := s.db.ListUsers(context.Background())
   if err != nil {
-    return fmt.Errorf("Error: %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   for _, user := range users {

@@ -11,7 +11,7 @@ const configFileName = ".gatorconfig.json"
 func getConfigFilePath() (string, error) {
   home_directory, err := os.UserHomeDir()
   if err != nil {
-     return "", fmt.Errorf("Error: %w", err)
+     return "", fmt.Errorf("Issue: %w", err)
   }
   return fmt.Sprintf("%s/%s", home_directory, configFileName), nil
 }
@@ -19,23 +19,23 @@ func getConfigFilePath() (string, error) {
 func write(cfg Config) error {
   filePath, err := getConfigFilePath()
   if err != nil {
-    return fmt.Errorf("Error: %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   file, err := os.Open(filePath)
   if err != nil {
-     return fmt.Errorf("Error: %w", err)
+     return fmt.Errorf("Issue: %w", err)
   }
   defer file.Close()
 
   data, err := json.Marshal(cfg)
   if err != nil {
-     return fmt.Errorf("Error: %w", err)
+     return fmt.Errorf("Issue: %w", err)
   }
 
 
   if err := os.WriteFile(filePath, data, 0666); err != nil {
-     return fmt.Errorf("Error: %w", err)
+     return fmt.Errorf("Issue: %w", err)
   }
 
   return nil
@@ -46,19 +46,19 @@ func Read() (Config, error) {
 
   filePath, err := getConfigFilePath()
   if err != nil {
-     return Config{}, fmt.Errorf("Error: %w", err)
+     return Config{}, fmt.Errorf("Issue: %w", err)
   }
 
   file, err := os.Open(filePath)
   if err != nil {
-     return Config{}, fmt.Errorf("Error: %w", err)
+     return Config{}, fmt.Errorf("Issue: %w", err)
   }
   defer file.Close()
 
   data, err := os.ReadFile(filePath)
 
   if err := json.Unmarshal(data, &config); err != nil {
-     return Config{}, fmt.Errorf("Error: %w", err)
+     return Config{}, fmt.Errorf("Issue: %w", err)
   }
 
   return config, nil

@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"strings"
+  "fmt"
+  "context"
 
 	"github.com/pssilv/Blog-aggregator/internal/config"
 	"github.com/pssilv/Blog-aggregator/internal/database"
@@ -42,8 +44,12 @@ func main() {
   commands.Register("reset", handlerReset)
   commands.Register("users", handlerList)
   commands.Register("agg", handlerAggregate)
-  commands.Register("addfeed", handlerFeed)
   commands.Register("feeds", handlerListFeeds)
+
+  commands.Register("addfeed", middlewareLoggedIn(handlerFeed))
+  commands.Register("follow", middlewareLoggedIn(handlerFollow))
+  commands.Register("unfollow", middlewareLoggedIn(handlerUnfollow))
+  commands.Register("following", middlewareLoggedIn(handlerListFollowingFeeds))
 
   args := os.Args[1:]
 
@@ -61,4 +67,15 @@ func main() {
     log.Fatal(err)
   }
 
+}
+
+func middlewareLoggedIn(handler func(s *State, cmd Command, user database.User) error) func(*State, Command) error {  
+  return func(s *State, cmd Command) error {
+    currentUser, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
+    if err != nil {
+      return fmt.Errorf("Issue: %w", err)
+    }
+
+    return handler(s, cmd, currentUser)
+  }
 }

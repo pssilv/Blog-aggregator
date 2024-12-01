@@ -37,7 +37,7 @@ func (c *Commands) Run(s *State, cmd Command) error {
   }
 
   if err := handler(s, cmd); err != nil {
-    return fmt.Errorf("Error %w", err)
+    return fmt.Errorf("Issue: %w", err)
   }
 
   return nil
