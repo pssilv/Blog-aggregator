@@ -13,7 +13,6 @@ To use you need:
 3. A local connection URL on "db_url" from .gatorconfig.json
    
 template (URL): protocol://username:password@host:port/database
-
 template (Postgres connection URL): postgres://postgres:postgres@localhost:5432/gator
 
 Commands:
