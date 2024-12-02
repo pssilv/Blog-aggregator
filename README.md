@@ -27,6 +27,6 @@ unfollow: unfollow a feed (needs url)
 following: shows all following feeds (doesn't need arguments)  
 
 agg: fetch feeds added with addfeed in a time interval and transform them into a post (needs time interval)  
-Remember not to set the time interval too low, 1m is the recommended time  
+Remember to not set the time interval too low, 1m is the recommended time  
 
 browse: show a specific number of posts, 2 is the default quantity (quantity is optional)  
