@@ -11,6 +11,7 @@ To use you need:
 1. A .json file at home directory called: .gatorconfig.json
 2. A database using Postgres on terminal called: gator
 3. A local connection URL on "db_url" from .gatorconfig.json
+   
 template (URL): protocol://username:password@host:port/database
 template (Postgres connection URL): postgres://postgres:postgres@localhost:5432/gator
 
