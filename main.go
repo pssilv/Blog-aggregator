@@ -20,12 +20,12 @@ func main() {
     log.Fatal(err)
   }
 
-  state := State {
-    cfg: &cfg,
-    connection: "postgres://postgres:postgres@localhost:5432/gator?sslmode=disable",
-  }
+state := State {
+cfg: &cfg,
+    connection: cfg.DBURL,
+}
 
-  commands := &Commands {
+commands := &Commands {
     CommandsName: make(map[string]func(*State, Command) error),
   }
 
@@ -55,7 +55,7 @@ func main() {
   args := os.Args[1:]
 
   if len(args) < 1 {
-    log.Fatal("Missing arguments")
+    log.Fatal("Missing command")
   }
 
 
