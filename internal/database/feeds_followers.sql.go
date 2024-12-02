@@ -97,7 +97,7 @@ const getFeedFollowsForUser = `-- name: GetFeedFollowsForUser :many
 
 SELECT feeds.url FROM feeds_follows
 INNER JOIN feeds
-ON feeds.id = feeds_follows.feed_id
+ON feeds_follows.feed_id = feeds.id
 WHERE feeds_follows.user_id = $1
 `
 

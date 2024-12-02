@@ -15,7 +15,6 @@ SELECT
   feeds.name AS feeds_name,
   users.name AS user_name
 FROM insert_feed_follow
---
 
 INNER JOIN users
 ON insert_feed_follow.user_id = users.id
@@ -27,7 +26,7 @@ ON insert_feed_follow.feed_id = feeds.id;
 -- name: GetFeedFollowsForUser :many
 SELECT feeds.url FROM feeds_follows
 INNER JOIN feeds
-ON feeds.id = feeds_follows.feed_id
+ON feeds_follows.feed_id = feeds.id
 WHERE feeds_follows.user_id = $1;
 --
 
@@ -36,3 +35,5 @@ DELETE FROM feeds_follows
 WHERE feeds_follows.user_id = $1
 AND feeds_follows.feed_id = $2;
 --
+
+

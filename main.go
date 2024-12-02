@@ -50,6 +50,7 @@ func main() {
   commands.Register("follow", middlewareLoggedIn(handlerFollow))
   commands.Register("unfollow", middlewareLoggedIn(handlerUnfollow))
   commands.Register("following", middlewareLoggedIn(handlerListFollowingFeeds))
+  commands.Register("browse", middlewareLoggedIn(handlerBrowse))
 
   args := os.Args[1:]
 
